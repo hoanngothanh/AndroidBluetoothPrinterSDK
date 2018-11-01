@@ -130,6 +130,12 @@ public class MainActivity extends BluetoothActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().register(MainActivity.this);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        EventBus.getDefault().register(MainActivity.this);
     }
 }
