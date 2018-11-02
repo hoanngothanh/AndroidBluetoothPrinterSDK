@@ -1,4 +1,4 @@
-package com.xmwdkk.boothprint;
+package net.fullsnackdev.escpos;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -6,13 +6,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.xmwdkk.boothprint.print.GPrinterCommand;
-import com.xmwdkk.boothprint.print.PrintPic;
-import com.xmwdkk.boothprint.print.PrintQueue;
-import com.xmwdkk.boothprint.print.PrintUtil;
-import com.xmwdkk.boothprint.printutil.PrintOrderDataMaker;
-import com.xmwdkk.boothprint.printutil.PrinterWriter;
-import com.xmwdkk.boothprint.printutil.PrinterWriter58mm;
+
+import net.fullsnackdev.escpos.print.GPrinterCommand;
+import net.fullsnackdev.escpos.print.PrintPic;
+import net.fullsnackdev.escpos.print.PrintQueue;
+import net.fullsnackdev.escpos.print.PrintUtil;
+import net.fullsnackdev.escpos.printutil.PrintOrderDataMaker;
+import net.fullsnackdev.escpos.printutil.PrinterWriter;
+import net.fullsnackdev.escpos.printutil.PrinterWriter58mm;
 
 import java.io.BufferedInputStream;
 import java.io.UnsupportedEncodingException;

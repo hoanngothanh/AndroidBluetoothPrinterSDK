@@ -1,8 +1,9 @@
-package com.xmwdkk.boothprint.printutil;
+package net.fullsnackdev.escpos.printutil;
 
 import android.content.Context;
 
-import com.xmwdkk.boothprint.R;
+
+import net.fullsnackdev.escpos.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

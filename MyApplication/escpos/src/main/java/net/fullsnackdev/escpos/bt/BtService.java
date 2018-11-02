@@ -1,4 +1,4 @@
-package com.xmwdkk.boothprint.bt;
+package net.fullsnackdev.escpos.bt;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -7,9 +7,9 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.util.Log;
 
-import com.xmwdkk.boothprint.print.PrintMsgEvent;
-import com.xmwdkk.boothprint.print.PrintQueue;
-import com.xmwdkk.boothprint.print.PrinterMsgType;
+import net.fullsnackdev.escpos.print.PrintMsgEvent;
+import net.fullsnackdev.escpos.print.PrintQueue;
+import net.fullsnackdev.escpos.print.PrinterMsgType;
 
 import java.io.IOException;
 import java.io.InputStream;

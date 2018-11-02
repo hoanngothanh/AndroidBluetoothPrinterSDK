@@ -1,4 +1,4 @@
-package com.xmwdkk.boothprint.base;
+package net.fullsnackdev.escpos.base;
 
 import android.app.Application;
 

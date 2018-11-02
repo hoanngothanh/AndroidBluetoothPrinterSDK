@@ -1,4 +1,4 @@
-package com.xmwdkk.boothprint.print;
+package net.fullsnackdev.escpos.print;
 
 /**
  * Created by liuguirong on 8/1/17.

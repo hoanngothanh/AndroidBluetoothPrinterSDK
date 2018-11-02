@@ -1,11 +1,11 @@
-package com.xmwdkk.boothprint.base;
+package net.fullsnackdev.escpos.base;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.os.Build;
 import android.util.DisplayMetrics;
 
-import com.xmwdkk.boothprint.print.PrintUtil;
+import net.fullsnackdev.escpos.print.PrintUtil;
 
 
 /**

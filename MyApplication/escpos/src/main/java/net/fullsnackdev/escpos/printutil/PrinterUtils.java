@@ -1,4 +1,4 @@
-package com.xmwdkk.boothprint.printutil;
+package net.fullsnackdev.escpos.printutil;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

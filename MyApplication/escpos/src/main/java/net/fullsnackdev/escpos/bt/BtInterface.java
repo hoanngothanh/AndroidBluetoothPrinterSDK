@@ -1,4 +1,4 @@
-package com.xmwdkk.boothprint.bt;
+package net.fullsnackdev.escpos.bt;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -7,12 +7,14 @@ import android.content.Intent;
 /**
  * Created by liuguirong on 8/1/17.
  */
+@SuppressWarnings("JavadocReference")
 public interface BtInterface {
     /**
      * start discovery bt device
      *
      * @see BluetoothAdapter.ACTION_DISCOVERY_STARTED
      */
+
     void btStartDiscovery(Intent intent);
 
     /**
