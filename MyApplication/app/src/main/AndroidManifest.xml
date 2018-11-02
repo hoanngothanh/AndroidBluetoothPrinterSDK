@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".base.App"
+        android:name="net.fullsnackdev.escpos.base.App"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -29,7 +29,7 @@
         </activity><activity android:name=".TextActivity">
 
         </activity>
-        <service android:name=".BtService"/>
+        <service android:name="net.fullsnackdev.escpos.BtService"/>
     </application>
 
 </manifest>

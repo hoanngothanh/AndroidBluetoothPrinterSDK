@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.xmwdkk.boothprint.base.AppInfo;
-import com.xmwdkk.boothprint.print.PrintUtil;
+import net.fullsnackdev.escpos.base.AppInfo;
+import net.fullsnackdev.escpos.print.PrintUtil;
 
 import java.util.ArrayList;
 

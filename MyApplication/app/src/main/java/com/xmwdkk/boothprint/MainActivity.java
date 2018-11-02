@@ -9,11 +9,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.xmwdkk.boothprint.base.AppInfo;
-import com.xmwdkk.boothprint.bt.BluetoothActivity;
-import com.xmwdkk.boothprint.print.PrintMsgEvent;
-import com.xmwdkk.boothprint.print.PrintUtil;
-import com.xmwdkk.boothprint.print.PrinterMsgType;
+import net.fullsnackdev.escpos.BtService;
+import net.fullsnackdev.escpos.base.AppInfo;
+import net.fullsnackdev.escpos.bt.BluetoothActivity;
+import net.fullsnackdev.escpos.print.PrintMsgEvent;
+import net.fullsnackdev.escpos.print.PrintUtil;
+import net.fullsnackdev.escpos.print.PrinterMsgType;
 import com.xmwdkk.boothprint.util.ToastUtil;
 
 import de.greenrobot.event.EventBus;

@@ -4,7 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.xmwdkk.boothprint.print.PrintUtil;
+import net.fullsnackdev.escpos.print.PrintUtil;
 
 /**
  * Created by liuguirong on 8/1/17.

@@ -14,10 +14,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.xmwdkk.boothprint.bt.BluetoothActivity;
-import com.xmwdkk.boothprint.bt.BtUtil;
-import com.xmwdkk.boothprint.print.PrintQueue;
-import com.xmwdkk.boothprint.print.PrintUtil;
+import net.fullsnackdev.escpos.bt.BluetoothActivity;
+import net.fullsnackdev.escpos.bt.BtUtil;
+import net.fullsnackdev.escpos.print.PrintQueue;
+import net.fullsnackdev.escpos.print.PrintUtil;
 import com.xmwdkk.boothprint.util.ToastUtil;
 
 import java.lang.reflect.Method;
