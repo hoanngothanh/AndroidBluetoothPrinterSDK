@@ -4,6 +4,8 @@ import android.content.Context;
 
 
 import net.fullsnackdev.escpos.R;
+import net.fullsnackdev.escpos.models.HistoryDetailRes;
+import net.fullsnackdev.escpos.models.HistoryOrderRes;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,14 +26,19 @@ public class PrintOrderDataMaker implements PrintDataMaker {
     private int width;
     private int height;
     Context btService;
+    private HistoryDetailRes mHistoryDetailRes;
+    private ArrayList<HistoryOrderRes> mHistoryOrderRes;
     private String remark = "微点筷客推出了餐厅管理系统，可用手机快速接单（来自客户的预订订单），进行订单管理、后厨管理等管理餐厅。";
 
 
-    public PrintOrderDataMaker( Context btService, String qr, int width, int height) {
+    public PrintOrderDataMaker( Context btService, String qr, int width, int height,
+                                HistoryDetailRes historyDetailRes, ArrayList<HistoryOrderRes> historyOrderRes) {
         this.qr = qr;
         this.width = width;
         this.height = height;
         this.btService = btService;
+        this.mHistoryDetailRes = historyDetailRes;
+        this.mHistoryOrderRes = historyOrderRes;
     }
 
 
@@ -56,10 +63,17 @@ public class PrintOrderDataMaker implements PrintDataMaker {
 
             printer.printLineFeed();
             printer.setAlignCenter();
-            printer.setEmphasizedOn();
-            printer.setFontSize(1);
-            printer.print("好吃点你就多吃点");
+            printer.setEmphasizedOff();
+            printer.setFontSize(0);
+            printer.print("iPay88 (M) Sdn Bhd");
             printer.printLineFeed();
+            printer.print("Suite 2B-20-1, 20th Floor");
+            printer.printLineFeed();
+            printer.print("Block 2B, Plaza Sentral");
+            printer.printLineFeed();
+            printer.print("50470 Kuala Lumpur, Malaysia");
+            printer.printLineFeed();
+            printer.print("N9NL10114660");
             printer.setEmphasizedOff();
             printer.printLineFeed();
 

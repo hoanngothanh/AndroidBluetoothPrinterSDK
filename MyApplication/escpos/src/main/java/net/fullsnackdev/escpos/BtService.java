@@ -119,15 +119,15 @@ public class BtService extends IntentService {
         printBytes.add(GPrinterCommand.print);
         PrintQueue.getQueue(getApplicationContext()).add(bytes);
     }
-//
-//    private void printPainting() {
-//        byte[] bytes = PrintPic.getInstance().printDraw();
-//        ArrayList<byte[]> printBytes = new ArrayList<byte[]>();
-//        printBytes.add(GPrinterCommand.reset);
-//        printBytes.add(GPrinterCommand.print);
-//        printBytes.add(bytes);
-//        Log.e("BtService", "image bytes size is :" + bytes.length);
-//        printBytes.add(GPrinterCommand.print);
-//        PrintQueue.getQueue(getApplicationContext()).add(bytes);
-//    }
+
+    private void printPainting() {
+        byte[] bytes = PrintPic.getInstance().printDraw();
+        ArrayList<byte[]> printBytes = new ArrayList<byte[]>();
+        printBytes.add(GPrinterCommand.reset);
+        printBytes.add(GPrinterCommand.print);
+        printBytes.add(bytes);
+        Log.e("BtService", "image bytes size is :" + bytes.length);
+        printBytes.add(GPrinterCommand.print);
+        PrintQueue.getQueue(getApplicationContext()).add(bytes);
+    }
 }
