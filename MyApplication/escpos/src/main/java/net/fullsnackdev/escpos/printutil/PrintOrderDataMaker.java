@@ -207,8 +207,8 @@ public class PrintOrderDataMaker implements PrintDataMaker {
 
 
              if (mHistoryOrderRes!=null && mHistoryOrderRes.size()>0) {
-                 printer.printLine();
 
+                 printer.printLine();
                  printer.printLineFeed();
                  printer.setAlignCenter();
                  printer.print("菜品信息");
