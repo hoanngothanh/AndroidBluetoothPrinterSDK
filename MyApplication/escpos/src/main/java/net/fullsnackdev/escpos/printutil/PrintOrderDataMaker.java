@@ -99,11 +99,11 @@ public class PrintOrderDataMaker implements PrintDataMaker {
                 printer.printLine();
                 printer.printLineFeed();
                 printer.setAlignCenter();
-                printer.print("菜品信息");
-                printer.printLineFeed();
-                printer.setAlignCenter();
-                printer.printInOneLine("菜名", "数量", "单价", 0);
-                printer.printLineFeed();
+//                printer.print("菜品信息");
+//                printer.printLineFeed();
+//                printer.setAlignCenter();
+//                printer.printInOneLine("菜名", "数量", "单价", 0);
+//                printer.printLineFeed();
                 for (int i = 0; i < mHistoryOrderRes.size(); i++) {
 
                     printer.printInOneLine(mHistoryOrderRes.get(i).getProductName(), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
@@ -199,11 +199,11 @@ public class PrintOrderDataMaker implements PrintDataMaker {
                  printer.printLine();
                  printer.printLineFeed();
                  printer.setAlignCenter();
-                 printer.print("菜品信息");
-                 printer.printLineFeed();
-                 printer.setAlignCenter();
-                 printer.printInOneLine("菜名", "数量", "单价", 0);
-                 printer.printLineFeed();
+//                 printer.print("菜品信息");
+//                 printer.printLineFeed();
+//                 printer.setAlignCenter();
+//                 printer.printInOneLine("菜名", "数量", "单价", 0);
+//                 printer.printLineFeed();
                  for (int i = 0; i < mHistoryOrderRes.size(); i++) {
 
                      printer.printInOneLine(mHistoryOrderRes.get(i).getProductName(), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
