@@ -84,16 +84,16 @@ public class BtService {
         // Give the new state to the Handler so the UI Activity can update
         switch (mState) {
             case STATE_LISTEN:
-                EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_STATE_CHANGE, "等待连接"));
+                EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_STATE_CHANGE, "Waiting for connection"));
                 break;
             case STATE_CONNECTING:
-                EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_STATE_CHANGE, "正在连接"));
+                EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_STATE_CHANGE, "connecting"));
                 break;
             case STATE_CONNECTED:
-                EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_STATE_CHANGE, "已连接"));
+                EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_STATE_CHANGE, "connected"));
                 break;
             default:
-                EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_STATE_CHANGE, "未连接"));
+                EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_STATE_CHANGE, "not connected"));
                 break;
         }
 
@@ -107,7 +107,7 @@ public class BtService {
      */
     public synchronized void connect(BluetoothDevice device) {
         Log.d(TAG, "connect to: " + device);
-        EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_TOAST, "正在连接蓝牙设备"));
+        EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_TOAST, "Connecting to a Bluetooth device"));
         // Cancel any thread attempting to make a connection
         if (mState == STATE_CONNECTING) {
             if (mConnectThread != null) {
@@ -161,7 +161,7 @@ public class BtService {
         mConnectedThread.start();
 
         // Send the name of the connected device back to the UI Activity
-        EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_TOAST, "蓝牙设备连接成功"));
+        EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_TOAST, "Bluetooth device connected successfully"));
 
         setState(STATE_CONNECTED);
 
@@ -235,7 +235,7 @@ public class BtService {
      */
     private void connectionFailed() {
 //         Send a failure message back to the Activity
-        EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_TOAST, "蓝牙连接失败,请重启打印机再试"));
+        EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_TOAST, "Bluetooth connection failed, please restart the printer and try again"));
         setState(STATE_NONE);
         // Start the service over to restart listening mode
         BtService.this.start();
@@ -276,7 +276,7 @@ public class BtService {
      */
     private void connectionLost() {
 //         Send a failure message back to the Activity
-        EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_TOAST, "蓝牙连接断开"));
+        EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_TOAST, "Bluetooth connection disconnected"));
         setState(STATE_NONE);
         // Start the service over to restart listening mode
         BtService.this.start();

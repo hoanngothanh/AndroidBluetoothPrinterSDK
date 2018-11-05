@@ -58,21 +58,21 @@ public class SearchBluetoothActivity extends BluetoothActivity implements Adapte
 
     private void init() {
         if (!BtUtil.isOpen(bluetoothAdapter)) {
-            tv_title.setText("未连接蓝牙打印机");
-            tv_summary.setText("系统蓝牙已关闭,点击开启");
+            tv_title.setText("Bluetooth printer not connected");
+            tv_summary.setText("System Bluetooth is off, click to open");
 
         } else {
             if (!PrintUtil.isBondPrinter(this, bluetoothAdapter)) {
                 //未绑定蓝牙打印机器
-                tv_title.setText("未连接蓝牙打印机");
-                tv_summary.setText("点击后搜索蓝牙打印机");
+                tv_title.setText("Bluetooth printer not connected");
+                tv_summary.setText("Click to search for Bluetooth printer");
 
             } else {
                 //已绑定蓝牙设备
-                tv_title.setText(getPrinterName() + "已连接");
+                tv_title.setText(getPrinterName() + "connected");
                 String blueAddress = PrintUtil.getDefaultBluethoothDeviceAddress(this);
                 if (TextUtils.isEmpty(blueAddress)) {
-                    blueAddress = "点击后搜索蓝牙打印机";
+                    blueAddress = "Click to search for Bluetooth printer";
                 }
                 tv_summary.setText(blueAddress);
             }
@@ -91,13 +91,13 @@ public class SearchBluetoothActivity extends BluetoothActivity implements Adapte
     private String getPrinterName(){
         String dName = PrintUtil.getDefaultBluetoothDeviceName(this);
         if (TextUtils.isEmpty(dName)) {
-            dName = "未知设备";
+            dName = "Unknown device";
         }
         return dName;
     }
     private String getPrinterName(String dName) {
         if (TextUtils.isEmpty(dName)) {
-            dName = "未知设备";
+            dName = "Unknown device";
         }
         return dName;
     }
@@ -123,14 +123,14 @@ public class SearchBluetoothActivity extends BluetoothActivity implements Adapte
     }
     @Override
     public void btStartDiscovery(Intent intent) {
-        tv_title.setText("正在搜索蓝牙设备…");
+        tv_title.setText("Searching for Bluetooth devices...");
         tv_summary.setText("");
     }
 
     @Override
     public void btFinishDiscovery(Intent intent) {
-        tv_title.setText("搜索完成");
-        tv_summary.setText("点击重新搜索");
+        tv_title.setText("Search completed");
+        tv_summary.setText("Click to search again");
     }
     @Override
     public void btFoundDevice(Intent intent) {
@@ -138,7 +138,7 @@ public class SearchBluetoothActivity extends BluetoothActivity implements Adapte
         Log.d("1","!");
         if (null != bluetoothAdapter && device != null) {
             searchBleAdapter.addDevices(device);
-            String dName = device.getName() == null ? "未知设备" : device.getName();
+            String dName = device.getName() == null ? "Unknown device" : device.getName();
             Log.d("未知设备",dName);
             Log.d("1","!");
         }
@@ -174,15 +174,15 @@ public class SearchBluetoothActivity extends BluetoothActivity implements Adapte
             return;
         }
         new AlertDialog.Builder(this)
-                .setTitle("绑定" + getPrinterName(bluetoothDevice.getName()) + "?")
-                .setMessage("点击确认绑定蓝牙设备")
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                .setTitle("Binding" + getPrinterName(bluetoothDevice.getName()) + "?")
+                .setMessage("Click to confirm binding Bluetooth device")
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 })
-                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
@@ -201,7 +201,7 @@ public class SearchBluetoothActivity extends BluetoothActivity implements Adapte
                             e.printStackTrace();
                             PrintUtil.setDefaultBluetoothDeviceAddress(getApplicationContext(), "");
                             PrintUtil.setDefaultBluetoothDeviceName(getApplicationContext(), "");
-                            ToastUtil.showToast(SearchBluetoothActivity.this,"蓝牙绑定失败,请重试");
+                            ToastUtil.showToast(SearchBluetoothActivity.this,"Bluetooth binding failed, please try again");
                         }
                     }
                 })
