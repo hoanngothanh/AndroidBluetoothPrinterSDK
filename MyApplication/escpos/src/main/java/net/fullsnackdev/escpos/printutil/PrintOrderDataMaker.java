@@ -54,11 +54,8 @@ public class PrintOrderDataMaker implements PrintDataMaker {
             printer.getDataAndReset();
             printer.reset();
             ArrayList<byte[]> image1 = printer.getImageByte(btService.getResources(), R.drawable.trick);
-
             data.addAll(image1);
-
             printer.setAlignLeft();
-//            printer.printLine();
             printer.printLineFeed();
 
             printer.printLineFeed();
@@ -81,31 +78,26 @@ public class PrintOrderDataMaker implements PrintDataMaker {
             printer.setFontSize(0);
             printer.setAlignLeft();
             printer.printLine();
-            printer.print("Ref. No(订单号):：" + mHistoryDetailRes.refNo);
+            printer.print("Ref.No(订单号):" + mHistoryDetailRes.refNo);
             printer.printLineFeed();
             if (mHistoryDetailRes.paymentDate != null) {
                 String
                         date = mHistoryDetailRes.paymentDate.substring(0, mHistoryDetailRes.paymentDate.lastIndexOf(":")).replace("T", " ");
-                printer.print("Date / Time(日期/时间):：" + date);
+                printer.print("Date/Time(日期/时间):" + date);
                 printer.printLineFeed();
             }
 
-//            printer.print(new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
-//                    .format(new Date(System.currentTimeMillis())));
-//            printer.printLineFeed();
-
-
-            printer.printLineFeed();
             printer.setAlignLeft();
             printer.print("Payment method(付款方式):" + mHistoryDetailRes.paymentType);
             printer.printLineFeed();
 
-            printer.printLine();
 
-            printer.printLineFeed();
 
 
             if (mHistoryOrderRes!=null && mHistoryOrderRes.size()>0) {
+
+                printer.printLine();
+                printer.printLineFeed();
                 printer.setAlignCenter();
                 printer.print("菜品信息");
                 printer.printLineFeed();
@@ -118,10 +110,12 @@ public class PrintOrderDataMaker implements PrintDataMaker {
                             mHistoryOrderRes.get(i).Amount, 0);
                     printer.printLineFeed();
                 }
+                printer.printLineFeed();
+                printer.printLine();
+                printer.printLineFeed();
             }
-            printer.printLineFeed();
-            printer.printLine();
-            printer.printLineFeed();
+
+
             printer.setAlignLeft();
             printer.printInOneLine("AMOUNT(金额): " ,mHistoryDetailRes.currency + " " + mHistoryDetailRes.amount,0);
             printer.printLineFeed();
@@ -160,11 +154,8 @@ public class PrintOrderDataMaker implements PrintDataMaker {
              printer.getDataAndReset();
              printer.reset();
              ArrayList<byte[]> image1 = printer.getImageByte(btService.getResources(), R.drawable.trick);
-
              data.addAll(image1);
-
              printer.setAlignLeft();
-//            printer.printLine();
              printer.printLineFeed();
 
              printer.printLineFeed();
@@ -196,9 +187,6 @@ public class PrintOrderDataMaker implements PrintDataMaker {
                  printer.printLineFeed();
              }
 
-//            printer.print(new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
-//                    .format(new Date(System.currentTimeMillis())));
-//            printer.printLineFeed();
              printer.setAlignLeft();
              printer.print("Payment method(付款方式):" + mHistoryDetailRes.paymentType);
              printer.printLineFeed();
