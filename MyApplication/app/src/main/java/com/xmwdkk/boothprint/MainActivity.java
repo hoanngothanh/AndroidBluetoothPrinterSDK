@@ -12,10 +12,14 @@ import android.widget.TextView;
 import net.fullsnackdev.escpos.BtService;
 import net.fullsnackdev.escpos.base.AppInfo;
 import net.fullsnackdev.escpos.bt.BluetoothActivity;
+import net.fullsnackdev.escpos.models.HistoryDetailRes;
+import net.fullsnackdev.escpos.models.HistoryOrderRes;
 import net.fullsnackdev.escpos.print.PrintMsgEvent;
 import net.fullsnackdev.escpos.print.PrintUtil;
 import net.fullsnackdev.escpos.print.PrinterMsgType;
 import com.xmwdkk.boothprint.util.ToastUtil;
+
+import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
@@ -84,6 +88,30 @@ public class MainActivity extends BluetoothActivity implements View.OnClickListe
                     }else {
                         ToastUtil.showToast(MainActivity.this,"打印测试...");
                         Intent intent = new Intent(getApplicationContext(), BtService.class);
+                        HistoryDetailRes historyDetailRes = new HistoryDetailRes();
+                        historyDetailRes.amount = 8.00;
+                        historyDetailRes.paymentType = "AliPay";
+                        historyDetailRes.refNo = "D201811089675";
+                        historyDetailRes.currency = "MYR";
+
+                        HistoryOrderRes historyOrderRes1 = new HistoryOrderRes();
+                        historyOrderRes1.setProductQuatity("2");
+                        historyOrderRes1.setPrice("1.00");
+                        historyOrderRes1.Amount = 2d;
+                        historyOrderRes1.setProductName("Apple");
+                        historyOrderRes1.setCurrency("MYR");
+                        HistoryOrderRes historyOrderRes2 = new HistoryOrderRes();
+                        historyOrderRes2.setProductQuatity("3");
+                        historyOrderRes2.Amount =6d;
+                        historyOrderRes2.setPrice("2.00");
+                        historyOrderRes2.setProductName("Apple");
+                        historyOrderRes2.setCurrency("MYR");
+                        ArrayList<HistoryOrderRes> list = new ArrayList<>();
+                        list.add(historyOrderRes1);
+                        list.add(historyOrderRes2);
+                        intent.putExtra(BtService.KEY_DATA_TRANSACTION, historyDetailRes);
+                        intent.putParcelableArrayListExtra(BtService.KEY_DATA_PRODUCT,list);
+                        intent.putExtra(BtService.KEY_PRINT_MERCHANT_CPY,true);
                         intent.setAction(PrintUtil.ACTION_PRINT_TEST);
                         startService(intent);
                     }

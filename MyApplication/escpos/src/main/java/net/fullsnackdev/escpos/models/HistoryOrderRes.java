@@ -6,18 +6,6 @@ import android.os.Parcelable;
 public class HistoryOrderRes implements Parcelable {
 
 
-    public static final Creator<HistoryOrderRes> CREATOR = new Creator<HistoryOrderRes>() {
-        @Override
-        public HistoryOrderRes createFromParcel(Parcel in) {
-            return new HistoryOrderRes(in);
-        }
-
-        @Override
-        public HistoryOrderRes[] newArray(int size) {
-            return new HistoryOrderRes[size];
-        }
-    };
-
     public String OrderDetailId;
 
     public String ProductId;
@@ -40,6 +28,8 @@ public class HistoryOrderRes implements Parcelable {
 
     public String ProductImage;
 
+    public HistoryOrderRes() {
+    }
 
     public HistoryOrderRes(String orderDetailId, String productId, String productName, String productQuatity, String price, Double amount, String discounAmount, String currency, String merchantCode, String merchantName, String productImage) {
         OrderDetailId = orderDetailId;
@@ -53,20 +43,6 @@ public class HistoryOrderRes implements Parcelable {
         MerchantCode = merchantCode;
         MerchantName = merchantName;
         ProductImage = productImage;
-    }
-
-    protected HistoryOrderRes(Parcel in) {
-        OrderDetailId = in.readString();
-        ProductId = in.readString();
-        ProductName = in.readString();
-        ProductQuatity = in.readString();
-        Price = in.readString();
-        Amount = Double.valueOf(in.readString());
-        DiscounAmount = in.readString();
-        Currency = in.readString();
-        MerchantCode = in.readString();
-        MerchantName = in.readString();
-        ProductImage = in.readString();
     }
 
     public String getOrderDetailId() {
@@ -168,12 +144,38 @@ public class HistoryOrderRes implements Parcelable {
         dest.writeString(this.ProductId);
         dest.writeString(this.ProductName);
         dest.writeString(this.ProductQuatity);
-        dest.writeString(this.ProductId);
-        dest.writeDouble(this.Amount);
-        dest.writeString(this.DiscounAmount);
         dest.writeString(this.Price);
+        dest.writeValue(this.Amount);
+        dest.writeString(this.DiscounAmount);
+        dest.writeString(this.Currency);
         dest.writeString(this.MerchantCode);
         dest.writeString(this.MerchantName);
         dest.writeString(this.ProductImage);
     }
+
+    protected HistoryOrderRes(Parcel in) {
+        this.OrderDetailId = in.readString();
+        this.ProductId = in.readString();
+        this.ProductName = in.readString();
+        this.ProductQuatity = in.readString();
+        this.Price = in.readString();
+        this.Amount = (Double) in.readValue(Double.class.getClassLoader());
+        this.DiscounAmount = in.readString();
+        this.Currency = in.readString();
+        this.MerchantCode = in.readString();
+        this.MerchantName = in.readString();
+        this.ProductImage = in.readString();
+    }
+
+    public static final Creator<HistoryOrderRes> CREATOR = new Creator<HistoryOrderRes>() {
+        @Override
+        public HistoryOrderRes createFromParcel(Parcel source) {
+            return new HistoryOrderRes(source);
+        }
+
+        @Override
+        public HistoryOrderRes[] newArray(int size) {
+            return new HistoryOrderRes[size];
+        }
+    };
 }

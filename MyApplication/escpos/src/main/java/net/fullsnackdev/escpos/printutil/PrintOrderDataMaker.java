@@ -31,8 +31,8 @@ public class PrintOrderDataMaker implements PrintDataMaker {
     private String remark = "微点筷客推出了餐厅管理系统，可用手机快速接单（来自客户的预订订单），进行订单管理、后厨管理等管理餐厅。";
 
 
-    public PrintOrderDataMaker( Context btService, String qr, int width, int height,
-                                HistoryDetailRes historyDetailRes, ArrayList<HistoryOrderRes> historyOrderRes) {
+    public PrintOrderDataMaker(Context btService, String qr, int width, int height,
+                               HistoryDetailRes historyDetailRes, ArrayList<HistoryOrderRes> historyOrderRes) {
         this.qr = qr;
         this.width = width;
         this.height = height;
@@ -40,7 +40,6 @@ public class PrintOrderDataMaker implements PrintDataMaker {
         this.mHistoryDetailRes = historyDetailRes;
         this.mHistoryOrderRes = historyOrderRes;
     }
-
 
 
     @Override
@@ -52,13 +51,14 @@ public class PrintOrderDataMaker implements PrintDataMaker {
             printer = type == PrinterWriter58mm.TYPE_58 ? new PrinterWriter58mm(height, width) : new PrinterWriter80mm(height, width);
             printer.setAlignCenter();
             data.add(printer.getDataAndReset());
-
-            ArrayList<byte[]> image1 = printer.getImageByte(btService.getResources(), R.drawable.demo);
+            printer.getDataAndReset();
+            printer.reset();
+            ArrayList<byte[]> image1 = printer.getImageByte(btService.getResources(), R.drawable.trick);
 
             data.addAll(image1);
 
             printer.setAlignLeft();
-            printer.printLine();
+//            printer.printLine();
             printer.printLineFeed();
 
             printer.printLineFeed();
@@ -79,79 +79,63 @@ public class PrintOrderDataMaker implements PrintDataMaker {
 
             printer.printLineFeed();
             printer.setFontSize(0);
-            printer.setAlignCenter();
-            printer.print("订单编号：" + "546545645465456454");
-            printer.printLineFeed();
-
-            printer.setAlignCenter();
-            printer.print(new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
-                    .format(new Date(System.currentTimeMillis())));
-            printer.printLineFeed();
+            printer.setAlignLeft();
             printer.printLine();
+            printer.print("Ref. No(订单号):：" + mHistoryDetailRes.refNo);
+            printer.printLineFeed();
+            if (mHistoryDetailRes.paymentDate != null) {
+                String
+                        date = mHistoryDetailRes.paymentDate.substring(0, mHistoryDetailRes.paymentDate.lastIndexOf(":")).replace("T", " ");
+                printer.print("Date / Time(日期/时间):：" + date);
+                printer.printLineFeed();
+            }
+
+//            printer.print(new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
+//                    .format(new Date(System.currentTimeMillis())));
+//            printer.printLineFeed();
+
 
             printer.printLineFeed();
             printer.setAlignLeft();
-            printer.print("订单状态: " + "已接单");
-            printer.printLineFeed();
-            printer.print("用户昵称: " +"周末先生");
-            printer.printLineFeed();
-            printer.print("用餐人数: " + "10人");
-            printer.printLineFeed();
-            printer.print("用餐桌号:" + "A3" + "号桌");
-            printer.printLineFeed();
-            printer.print("预定时间：" + "2017-10-1 17：00");
-            printer.printLineFeed();
-            printer.print("预留时间：30分钟");
-            printer.printLineFeed();
-            printer.print("联系方式：" + "18094111545454");
-            printer.printLineFeed();
-            printer.printLine();
+            printer.print("Payment method(付款方式):" + mHistoryDetailRes.paymentType);
             printer.printLineFeed();
 
-            printer.setAlignLeft();
-            printer.print("备注：" + "记得留位置");
-            printer.printLineFeed();
             printer.printLine();
 
             printer.printLineFeed();
 
+
+            if (mHistoryOrderRes!=null && mHistoryOrderRes.size()>0) {
                 printer.setAlignCenter();
                 printer.print("菜品信息");
                 printer.printLineFeed();
                 printer.setAlignCenter();
                 printer.printInOneLine("菜名", "数量", "单价", 0);
                 printer.printLineFeed();
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < mHistoryOrderRes.size(); i++) {
 
-                    printer.printInOneLine("干锅包菜", "X" + 3, "￥" + 30, 0);
+                    printer.printInOneLine(mHistoryOrderRes.get(i).getProductName(), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
+                            mHistoryOrderRes.get(i).Amount, 0);
                     printer.printLineFeed();
                 }
-                printer.printLineFeed();
-                printer.printLine();
-                printer.printLineFeed();
-                printer.setAlignLeft();
-                printer.printInOneLine("菜品总额：", "￥" + 100, 0);
-
-
-            printer.setAlignLeft();
-            printer.printInOneLine("优惠金额：", "￥" +"0.00"
-                    , 0);
+            }
             printer.printLineFeed();
-
-            printer.setAlignLeft();
-            printer.printInOneLine("订金/退款：", "￥" + "0.00"
-                          , 0);
+            printer.printLine();
             printer.printLineFeed();
-
-
             printer.setAlignLeft();
-            printer.printInOneLine("总计金额：", "￥" +90, 0);
+            printer.printInOneLine("AMOUNT(金额): " ,mHistoryDetailRes.currency + " " + mHistoryDetailRes.amount,0);
             printer.printLineFeed();
 
             printer.printLine();
             printer.printLineFeed();
             printer.setAlignCenter();
-            printer.print("谢谢惠顾，欢迎再次光临！");
+            printer.print("*** Customer Copy ***");
+            printer.printLineFeed();
+            printer.print("*** 持卡人存根 ***");
+            printer.printLineFeed();
+            printer.print("THANK YOU AND COME AGAIN");
+            printer.printLineFeed();
+            printer.print("谢谢惠顾，请再光临");
             printer.printLineFeed();
             printer.printLineFeed();
             printer.printLineFeed();
@@ -165,4 +149,109 @@ public class PrintOrderDataMaker implements PrintDataMaker {
     }
 
 
+     public List<byte[]> getPrintDataMerchant(int type)  {
+         ArrayList<byte[]> data = new ArrayList<>();
+
+         try {
+             PrinterWriter printer;
+             printer = type == PrinterWriter58mm.TYPE_58 ? new PrinterWriter58mm(height, width) : new PrinterWriter80mm(height, width);
+             printer.setAlignCenter();
+             data.add(printer.getDataAndReset());
+             printer.getDataAndReset();
+             printer.reset();
+             ArrayList<byte[]> image1 = printer.getImageByte(btService.getResources(), R.drawable.trick);
+
+             data.addAll(image1);
+
+             printer.setAlignLeft();
+//            printer.printLine();
+             printer.printLineFeed();
+
+             printer.printLineFeed();
+             printer.setAlignCenter();
+             printer.setEmphasizedOff();
+             printer.setFontSize(0);
+             printer.print("iPay88 (M) Sdn Bhd");
+             printer.printLineFeed();
+             printer.print("Suite 2B-20-1, 20th Floor");
+             printer.printLineFeed();
+             printer.print("Block 2B, Plaza Sentral");
+             printer.printLineFeed();
+             printer.print("50470 Kuala Lumpur, Malaysia");
+             printer.printLineFeed();
+             printer.print("N9NL10114660");
+             printer.setEmphasizedOff();
+             printer.printLineFeed();
+
+             printer.printLineFeed();
+             printer.setFontSize(0);
+             printer.setAlignLeft();
+             printer.printLine();
+             printer.print("Ref. No(订单号):：" + mHistoryDetailRes.refNo);
+             printer.printLineFeed();
+             if (mHistoryDetailRes.paymentDate != null) {
+                 String
+                         date = mHistoryDetailRes.paymentDate.substring(0, mHistoryDetailRes.paymentDate.lastIndexOf(":")).replace("T", " ");
+                 printer.print("Date / Time(日期/时间):：" + date);
+                 printer.printLineFeed();
+             }
+
+//            printer.print(new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
+//                    .format(new Date(System.currentTimeMillis())));
+//            printer.printLineFeed();
+
+
+             printer.printLineFeed();
+             printer.setAlignLeft();
+             printer.print("Payment method(付款方式):" + mHistoryDetailRes.paymentType);
+             printer.printLineFeed();
+
+             printer.printLine();
+
+             printer.printLineFeed();
+
+
+             if (mHistoryOrderRes!=null && mHistoryOrderRes.size()>0) {
+                 printer.setAlignCenter();
+                 printer.print("菜品信息");
+                 printer.printLineFeed();
+                 printer.setAlignCenter();
+                 printer.printInOneLine("菜名", "数量", "单价", 0);
+                 printer.printLineFeed();
+                 for (int i = 0; i < mHistoryOrderRes.size(); i++) {
+
+                     printer.printInOneLine(mHistoryOrderRes.get(i).getProductName(), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
+                             mHistoryOrderRes.get(i).Amount, 0);
+                     printer.printLineFeed();
+                 }
+                 printer.printLineFeed();
+                 printer.printLine();
+             }
+
+             printer.printLineFeed();
+             printer.setAlignLeft();
+             printer.printInOneLine("AMOUNT(金额): " ,mHistoryDetailRes.currency + " " + mHistoryDetailRes.amount,0);
+             printer.printLineFeed();
+
+             printer.printLine();
+             printer.printLineFeed();
+             printer.setAlignCenter();
+             printer.print("*** Merchant Copy ***");
+             printer.printLineFeed();
+             printer.print("*** 商户存根 ***");
+             printer.printLineFeed();
+             printer.print("THANK YOU AND COME AGAIN");
+             printer.printLineFeed();
+             printer.print("谢谢惠顾，请再光临");
+             printer.printLineFeed();
+             printer.printLineFeed();
+             printer.printLineFeed();
+             printer.feedPaperCutPartial();
+
+             data.add(printer.getDataAndClose());
+             return data;
+         } catch (Exception e) {
+             return new ArrayList<>();
+         }
+    }
 }

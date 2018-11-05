@@ -21,7 +21,7 @@ public class BluetoothController {
             activity.mBtEnable = false;
             return;
         }
-        Log.d("activity.mAdapter.getState()","activity.mAdapter.getState()"+activity.mAdapter.getState());
+        Log.d("getState()","activity.mAdapter.getState()"+activity.mAdapter.getState());
         if (!activity.mAdapter.isEnabled()) {
             //没有在开启中也没有打开
 //            if ( activity.mAdapter.getState()!=BluetoothAdapter.STATE_TURNING_ON  && activity.mAdapter.getState()!=BluetoothAdapter.STATE_ON ){

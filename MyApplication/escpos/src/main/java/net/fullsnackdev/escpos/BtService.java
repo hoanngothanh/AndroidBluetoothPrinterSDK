@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 
+import net.fullsnackdev.escpos.models.HistoryDetailRes;
+import net.fullsnackdev.escpos.models.HistoryOrderRes;
 import net.fullsnackdev.escpos.print.GPrinterCommand;
 import net.fullsnackdev.escpos.print.PrintPic;
 import net.fullsnackdev.escpos.print.PrintQueue;
@@ -25,6 +27,12 @@ import java.util.ArrayList;
  * print ticket service
  */
 public class BtService extends IntentService {
+    public static final String KEY_DATA_TRANSACTION = "transaction";
+    public static final String KEY_DATA_PRODUCT = "product";
+    public static final String KEY_PRINT_MERCHANT_CPY = "print_merchant_cpy";
+
+    private HistoryDetailRes mHistoryDetailRes;
+    private ArrayList<HistoryOrderRes> mHistoryOrderRes;
 
     public BtService() {
         super("BtService");
@@ -45,27 +53,35 @@ public class BtService extends IntentService {
             return;
         }
         if (intent.getAction().equals(PrintUtil.ACTION_PRINT_TEST)) {
-            printTest();
+            mHistoryDetailRes = intent.getParcelableExtra(KEY_DATA_TRANSACTION);
+            mHistoryOrderRes = intent.getParcelableArrayListExtra(KEY_DATA_PRODUCT);
+            Boolean merchantPrint = intent.getBooleanExtra(KEY_PRINT_MERCHANT_CPY, false);
+            printTest(mHistoryDetailRes, mHistoryOrderRes, merchantPrint);
         } else if (intent.getAction().equals(PrintUtil.ACTION_PRINT_TEST_TWO)) {
             printTesttwo(3);
-        }else if (intent.getAction().equals(PrintUtil.ACTION_PRINT_BITMAP)) {
+        } else if (intent.getAction().equals(PrintUtil.ACTION_PRINT_BITMAP)) {
             printBitmapTest();
         }
 
     }
 
-    private void printTest() {
-            PrintOrderDataMaker printOrderDataMaker = new PrintOrderDataMaker(this,"", PrinterWriter58mm.TYPE_58, PrinterWriter.HEIGHT_PARTING_DEFAULT);
-            ArrayList<byte[]> printData = (ArrayList<byte[]>) printOrderDataMaker.getPrintData(PrinterWriter58mm.TYPE_58);
-            PrintQueue.getQueue(getApplicationContext()).add(printData);
+    private void printTest(HistoryDetailRes historyDetailRes, ArrayList<HistoryOrderRes> historyOrderRes, boolean merchantcopy) {
+        PrintOrderDataMaker printOrderDataMaker = new PrintOrderDataMaker(this, "", PrinterWriter58mm.TYPE_58, PrinterWriter.HEIGHT_PARTING_DEFAULT, historyDetailRes, historyOrderRes);
+        ArrayList<byte[]> printData = (ArrayList<byte[]>) printOrderDataMaker.getPrintData(PrinterWriter58mm.TYPE_58);
+        PrintQueue.getQueue(getApplicationContext()).add(printData);
+        if (merchantcopy) {
+            ArrayList<byte[]> printDataMerchant = (ArrayList<byte[]>) printOrderDataMaker.getPrintDataMerchant(PrinterWriter58mm.TYPE_58);
+            PrintQueue.getQueue(getApplicationContext()).add(printDataMerchant);
+        }
 
     }
 
     /**
      * 打印几遍
+     *
      * @param num
      */
-  private void printTesttwo(int num) {
+    private void printTesttwo(int num) {
         try {
             ArrayList<byte[]> bytes = new ArrayList<byte[]>();
             for (int i = 0; i < num; i++) {
