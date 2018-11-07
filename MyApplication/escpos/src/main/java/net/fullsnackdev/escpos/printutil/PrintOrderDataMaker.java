@@ -106,11 +106,11 @@ public class PrintOrderDataMaker implements PrintDataMaker {
 //                printer.printLineFeed();
                 for (int i = 0; i < mHistoryOrderRes.size(); i++) {
 
-                    printer.printInOneLine(mHistoryOrderRes.get(i).getProductName(), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
+                    printer.printInOneLine(mHistoryOrderRes.get(i).getProductName().trim()
+                            .substring(0,Math.min(12,mHistoryOrderRes.get(i).getProductName().trim().length())), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
                             mHistoryOrderRes.get(i).Amount, 0);
                     printer.printLineFeed();
                 }
-                printer.printLineFeed();
                 printer.printLine();
                 printer.printLineFeed();
             }
@@ -121,6 +121,7 @@ public class PrintOrderDataMaker implements PrintDataMaker {
             printer.printLineFeed();
 
             printer.printLine();
+            printer.printLineFeed();
             printer.printLineFeed();
             printer.setAlignCenter();
             printer.print("*** Customer Copy ***");
@@ -205,12 +206,11 @@ public class PrintOrderDataMaker implements PrintDataMaker {
 //                 printer.printInOneLine("菜名", "数量", "单价", 0);
 //                 printer.printLineFeed();
                  for (int i = 0; i < mHistoryOrderRes.size(); i++) {
-
-                     printer.printInOneLine(mHistoryOrderRes.get(i).getProductName(), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
+                     printer.printInOneLine(mHistoryOrderRes.get(i).getProductName().trim()
+                             .substring(0,Math.min(12,mHistoryOrderRes.get(i).getProductName().trim().length())), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
                              mHistoryOrderRes.get(i).Amount, 0);
                      printer.printLineFeed();
                  }
-                 printer.printLineFeed();
                  printer.printLine();
                  printer.printLineFeed();
              }
@@ -221,6 +221,7 @@ public class PrintOrderDataMaker implements PrintDataMaker {
              printer.printLineFeed();
 
              printer.printLine();
+             printer.printLineFeed();
              printer.printLineFeed();
              printer.setAlignCenter();
              printer.print("*** Merchant Copy ***");
