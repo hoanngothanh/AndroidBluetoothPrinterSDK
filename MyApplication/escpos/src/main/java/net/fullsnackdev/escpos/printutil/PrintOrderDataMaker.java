@@ -2,16 +2,12 @@ package net.fullsnackdev.escpos.printutil;
 
 import android.content.Context;
 
-
 import net.fullsnackdev.escpos.R;
 import net.fullsnackdev.escpos.models.HistoryDetailRes;
 import net.fullsnackdev.escpos.models.HistoryOrderRes;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 
 /**
@@ -77,18 +73,18 @@ public class PrintOrderDataMaker implements PrintDataMaker {
             printer.printLineFeed();
             printer.setFontSize(0);
             printer.setAlignLeft();
-            printer.printLine();
-            printer.print("Ref.No(订单号):" + mHistoryDetailRes.refNo);
+            printer.printLineDouble();
+            printer.print("Ref.No:" + mHistoryDetailRes.refNo);
             printer.printLineFeed();
             if (mHistoryDetailRes.paymentDate != null) {
                 String
                         date = mHistoryDetailRes.paymentDate.substring(0, mHistoryDetailRes.paymentDate.lastIndexOf(":")).replace("T", " ");
-                printer.print("Date/Time(日期/时间):" + date);
+                printer.print("Date/Time:" + date);
                 printer.printLineFeed();
             }
 
             printer.setAlignLeft();
-            printer.print("Payment method(付款方式):" + mHistoryDetailRes.paymentType);
+            printer.print("Payment method:" + mHistoryDetailRes.paymentType);
             printer.printLineFeed();
 
 
@@ -99,16 +95,21 @@ public class PrintOrderDataMaker implements PrintDataMaker {
                 printer.printLine();
                 printer.printLineFeed();
                 printer.setAlignCenter();
-//                printer.print("菜品信息");
-//                printer.printLineFeed();
-//                printer.setAlignCenter();
-//                printer.printInOneLine("菜名", "数量", "单价", 0);
-//                printer.printLineFeed();
+//                 printer.print("菜品信息");
+//                 printer.printLineFeed();
+                printer.setAlignCenter();
+                printer.printInOneLine("Quantity", "Price", "Amount", 0);
+                printer.printLine();
+//                 printer.printLineFeed();
                 for (int i = 0; i < mHistoryOrderRes.size(); i++) {
-
-                    printer.printInOneLine(mHistoryOrderRes.get(i).getProductName().trim()
-                            .substring(0,Math.min(12,mHistoryOrderRes.get(i).getProductName().trim().length())), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
-                            mHistoryOrderRes.get(i).Amount, 0);
+//                     printer.printInOneLine(mHistoryOrderRes.get(i).getProductName().trim()
+//                             .substring(0,Math.min(12,mHistoryOrderRes.get(i).getProductName().trim().length())), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
+//                             mHistoryOrderRes.get(i).Amount, 0);
+                    printer.setAlignLeft();
+                    printer.print(mHistoryOrderRes.get(i).ProductId +" "+mHistoryOrderRes.get(i).getProductName().trim());
+                    printer.printLineFeed();
+                    printer.setAlignCenter();
+                    printer.printInOneLine(mHistoryOrderRes.get(i).getProductQuatity(), mHistoryOrderRes.get(i).getPrice(), mHistoryOrderRes.get(i).Amount.toString(),0);
                     printer.printLineFeed();
                 }
                 printer.printLine();
@@ -117,10 +118,10 @@ public class PrintOrderDataMaker implements PrintDataMaker {
 
 
             printer.setAlignLeft();
-            printer.printInOneLine("AMOUNT(金额): " ,mHistoryDetailRes.currency + " " + mHistoryDetailRes.amount,0);
+            printer.printInOneLine("AMOUNT: " ,mHistoryDetailRes.currency + " " + mHistoryDetailRes.amount,0);
             printer.printLineFeed();
 
-            printer.printLine();
+            printer.printLineDouble();
             printer.printLineFeed();
             printer.printLineFeed();
             printer.setAlignCenter();
@@ -178,18 +179,18 @@ public class PrintOrderDataMaker implements PrintDataMaker {
              printer.printLineFeed();
              printer.setFontSize(0);
              printer.setAlignLeft();
-             printer.printLine();
-             printer.print("Ref.No(订单号):" + mHistoryDetailRes.refNo);
+             printer.printLineDouble();
+             printer.print("Ref.No:" + mHistoryDetailRes.refNo);
              printer.printLineFeed();
              if (mHistoryDetailRes.paymentDate != null) {
                  String
                          date = mHistoryDetailRes.paymentDate.substring(0, mHistoryDetailRes.paymentDate.lastIndexOf(":")).replace("T", " ");
-                 printer.print("Date/Time(日期/时间):" + date);
+                 printer.print("Date/Time:" + date);
                  printer.printLineFeed();
              }
 
              printer.setAlignLeft();
-             printer.print("Payment method(付款方式):" + mHistoryDetailRes.paymentType);
+             printer.print("Payment method:" + mHistoryDetailRes.paymentType);
              printer.printLineFeed();
 
 
@@ -202,13 +203,19 @@ public class PrintOrderDataMaker implements PrintDataMaker {
                  printer.setAlignCenter();
 //                 printer.print("菜品信息");
 //                 printer.printLineFeed();
-//                 printer.setAlignCenter();
-//                 printer.printInOneLine("菜名", "数量", "单价", 0);
+                 printer.setAlignCenter();
+                 printer.printInOneLine("Quantity", "Price", "Amount", -1);
+                 printer.printLine();
 //                 printer.printLineFeed();
                  for (int i = 0; i < mHistoryOrderRes.size(); i++) {
-                     printer.printInOneLine(mHistoryOrderRes.get(i).getProductName().trim()
-                             .substring(0,Math.min(12,mHistoryOrderRes.get(i).getProductName().trim().length())), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
-                             mHistoryOrderRes.get(i).Amount, 0);
+//                     printer.printInOneLine(mHistoryOrderRes.get(i).getProductName().trim()
+//                             .substring(0,Math.min(12,mHistoryOrderRes.get(i).getProductName().trim().length())), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
+//                             mHistoryOrderRes.get(i).Amount, 0);
+                     printer.setAlignLeft();
+                     printer.print(mHistoryOrderRes.get(i).ProductId +" "+mHistoryOrderRes.get(i).getProductName().trim());
+                     printer.printLineFeed();
+                     printer.setAlignCenter();
+                     printer.printInOneLine(mHistoryOrderRes.get(i).getProductQuatity(), mHistoryOrderRes.get(i).getPrice(), mHistoryOrderRes.get(i).Amount.toString(),0);
                      printer.printLineFeed();
                  }
                  printer.printLine();
@@ -217,10 +224,10 @@ public class PrintOrderDataMaker implements PrintDataMaker {
 
 
              printer.setAlignLeft();
-             printer.printInOneLine("AMOUNT(金额): " ,mHistoryDetailRes.currency + " " + mHistoryDetailRes.amount,0);
+             printer.printInOneLine("AMOUNT: " ,mHistoryDetailRes.currency + " " + mHistoryDetailRes.amount,0);
              printer.printLineFeed();
 
-             printer.printLine();
+             printer.printLineDouble();
              printer.printLineFeed();
              printer.printLineFeed();
              printer.setAlignCenter();

@@ -224,6 +224,16 @@ public abstract class PrinterWriter {
         print(line);
     }
 
+
+    public void printLineDouble() throws IOException {
+        int length = getLineWidth();
+        String line = "";
+        while (length > 0) {
+            line += "= ";
+            length--;
+        }
+        print(line);
+    }
     /**
      * 获取横线线宽
      *

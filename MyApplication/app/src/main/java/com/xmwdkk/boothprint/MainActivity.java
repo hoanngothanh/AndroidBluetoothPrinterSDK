@@ -9,6 +9,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.xmwdkk.boothprint.util.ToastUtil;
+
 import net.fullsnackdev.escpos.BtService;
 import net.fullsnackdev.escpos.base.AppInfo;
 import net.fullsnackdev.escpos.bt.BluetoothActivity;
@@ -17,7 +19,6 @@ import net.fullsnackdev.escpos.models.HistoryOrderRes;
 import net.fullsnackdev.escpos.print.PrintMsgEvent;
 import net.fullsnackdev.escpos.print.PrintUtil;
 import net.fullsnackdev.escpos.print.PrinterMsgType;
-import com.xmwdkk.boothprint.util.ToastUtil;
 
 import java.util.ArrayList;
 
@@ -98,13 +99,15 @@ public class MainActivity extends BluetoothActivity implements View.OnClickListe
                         historyOrderRes1.setProductQuatity("2");
                         historyOrderRes1.setPrice("1.00");
                         historyOrderRes1.Amount = 2d;
+                        historyOrderRes1.setProductId("12345");
                         historyOrderRes1.setProductName("Apple");
                         historyOrderRes1.setCurrency("MYR");
                         HistoryOrderRes historyOrderRes2 = new HistoryOrderRes();
                         historyOrderRes2.setProductQuatity("3");
                         historyOrderRes2.Amount =6d;
                         historyOrderRes2.setPrice("2.00");
-                        historyOrderRes2.setProductName("Apple");
+                        historyOrderRes2.setProductId("222222");
+                        historyOrderRes2.setProductName("Orange");
                         historyOrderRes2.setCurrency("MYR");
                         ArrayList<HistoryOrderRes> list = new ArrayList<>();
                         list.add(historyOrderRes1);
