@@ -74,6 +74,7 @@ public class PrintOrderDataMaker implements PrintDataMaker {
             printer.setFontSize(0);
             printer.setAlignLeft();
             printer.printLineDouble();
+            printer.printLineFeed();
             printer.print("Ref.No:" + mHistoryDetailRes.refNo);
             printer.printLineFeed();
             if (mHistoryDetailRes.paymentDate != null) {
@@ -103,6 +104,7 @@ public class PrintOrderDataMaker implements PrintDataMaker {
                 printer.printLine();
                 printer.printLineFeed();
 //                 printer.printLineFeed();
+                printer.setAlignLeft();
                 for (int i = 0; i < mHistoryOrderRes.size(); i++) {
 //                     printer.printInOneLine(mHistoryOrderRes.get(i).getProductName().trim()
 //                             .substring(0,Math.min(12,mHistoryOrderRes.get(i).getProductName().trim().length())), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
@@ -114,6 +116,7 @@ public class PrintOrderDataMaker implements PrintDataMaker {
                     printer.printInOneLine(mHistoryOrderRes.get(i).getProductQuatity(), mHistoryOrderRes.get(i).getPrice(), mHistoryOrderRes.get(i).Amount.toString(),0);
                     printer.printLineFeed();
                 }
+                printer.setAlignLeft();
                 printer.printLine();
                 printer.printLineFeed();
             }
@@ -182,6 +185,7 @@ public class PrintOrderDataMaker implements PrintDataMaker {
              printer.setFontSize(0);
              printer.setAlignLeft();
              printer.printLineDouble();
+             printer.printLineFeed();
              printer.print("Ref.No:" + mHistoryDetailRes.refNo);
              printer.printLineFeed();
              if (mHistoryDetailRes.paymentDate != null) {
@@ -211,6 +215,7 @@ public class PrintOrderDataMaker implements PrintDataMaker {
                  printer.printLine();
                  printer.printLineFeed();
 //                 printer.printLineFeed();
+                 printer.setAlignLeft();
                  for (int i = 0; i < mHistoryOrderRes.size(); i++) {
 //                     printer.printInOneLine(mHistoryOrderRes.get(i).getProductName().trim()
 //                             .substring(0,Math.min(12,mHistoryOrderRes.get(i).getProductName().trim().length())), "X" + mHistoryOrderRes.get(i).ProductQuatity, mHistoryOrderRes.get(i).Currency +" " +
@@ -222,6 +227,7 @@ public class PrintOrderDataMaker implements PrintDataMaker {
                      printer.printInOneLine(mHistoryOrderRes.get(i).getProductQuatity(), mHistoryOrderRes.get(i).getPrice(), mHistoryOrderRes.get(i).Amount.toString(),0);
                      printer.printLineFeed();
                  }
+                 printer.setAlignLeft();
                  printer.printLine();
                  printer.printLineFeed();
              }
