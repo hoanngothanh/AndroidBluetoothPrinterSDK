@@ -99,7 +99,9 @@ public class PrintOrderDataMaker implements PrintDataMaker {
 //                 printer.printLineFeed();
                 printer.setAlignCenter();
                 printer.printInOneLine("Quantity", "Price", "Amount", 0);
+                printer.printLineFeed();
                 printer.printLine();
+                printer.printLineFeed();
 //                 printer.printLineFeed();
                 for (int i = 0; i < mHistoryOrderRes.size(); i++) {
 //                     printer.printInOneLine(mHistoryOrderRes.get(i).getProductName().trim()
@@ -205,7 +207,9 @@ public class PrintOrderDataMaker implements PrintDataMaker {
 //                 printer.printLineFeed();
                  printer.setAlignCenter();
                  printer.printInOneLine("Quantity", "Price", "Amount", -1);
+                 printer.printLineFeed();
                  printer.printLine();
+                 printer.printLineFeed();
 //                 printer.printLineFeed();
                  for (int i = 0; i < mHistoryOrderRes.size(); i++) {
 //                     printer.printInOneLine(mHistoryOrderRes.get(i).getProductName().trim()
