@@ -5,8 +5,12 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
+import net.fullsnackdev.escpos.IpayPrinter;
+import net.fullsnackdev.escpos.PrinterDbHelper;
+import net.fullsnackdev.escpos.base.AppInfo;
 import net.fullsnackdev.escpos.print.PrintMsgEvent;
 import net.fullsnackdev.escpos.print.PrintQueue;
 import net.fullsnackdev.escpos.print.PrinterMsgType;
@@ -14,6 +18,8 @@ import net.fullsnackdev.escpos.print.PrinterMsgType;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import de.greenrobot.event.EventBus;
@@ -25,9 +31,9 @@ import de.greenrobot.event.EventBus;
  * connections, a thread for connecting with a device, and a thread for
  * performing data transmissions when connected.
  * 这个类完成所有的设置和管理蓝牙的工作
-   *与其他设备的连接。 它有一个线程来侦听来电
-   *连接，用于与设备连接的线程和线程
-   *连接时执行数据传输。
+ *   *与其他设备的连接。 它有一个线程来侦听来电
+ *   *连接，用于与设备连接的线程和线程
+ *   *连接时执行数据传输。
  */
 public class BtService {
 
@@ -35,7 +41,6 @@ public class BtService {
     public static final int STATE_NONE = 0; // we're doing nothing
     public static final int STATE_LISTEN = 1; // now listening for incoming connections
     public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
-
     // INSECURE "8ce255c0-200a-11e0-ac64-0800200c9a66"
     // SECURE "fa87c0d0-afac-11de-8a39-0800200c9a66"
     // SPP "0001101-0000-1000-8000-00805F9B34FB"
@@ -48,6 +53,9 @@ public class BtService {
     private static final UUID MY_UUID = UUID.fromString("0001101-0000-1000-8000-00805F9B34FB");
     // Member fields
     private final BluetoothAdapter mAdapter;
+    private PrinterDbHelper mPrinterDbHelper;
+    private List<IpayPrinter> mPrinterList;
+    private ArrayList<BluetoothDevice> mDeviceArrayList;
     private AcceptThread mAcceptThread;
     private ConnectThread mConnectThread;
     private ConnectedThread mConnectedThread;
@@ -62,6 +70,15 @@ public class BtService {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = STATE_NONE;
         this.mContext = context;
+        mPrinterDbHelper = PrinterDbHelper.getInstance(context);
+        mPrinterList = mPrinterDbHelper.getAllPPrinter();
+        for (int i = 0; i < mPrinterList.size(); i++) {
+            if (!TextUtils.isEmpty(mPrinterList.get(i).macAddress)) {
+                BluetoothDevice device = mAdapter.getRemoteDevice(mPrinterList.get(i).macAddress);
+                mDeviceArrayList.add(device);
+                return;
+            }
+        }
     }
 
     /**
@@ -107,7 +124,9 @@ public class BtService {
      */
     public synchronized void connect(BluetoothDevice device) {
         Log.d(TAG, "connect to: " + device);
-        EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_TOAST, "Connecting to a Bluetooth device"));
+        mDeviceArrayList.remove(device);
+
+        EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_TOAST, "Connecting to " + device.getName()));
         // Cancel any thread attempting to make a connection
         if (mState == STATE_CONNECTING) {
             if (mConnectThread != null) {
@@ -239,13 +258,20 @@ public class BtService {
         setState(STATE_NONE);
         // Start the service over to restart listening mode
         BtService.this.start();
+        retryConnected();
+    }
+
+    private void retryConnected() {
+        BluetoothDevice bluetoothDevice = mDeviceArrayList.get(0);
+        connect(bluetoothDevice);
+
     }
 
     /**
      * Start the chat service. Specifically start AcceptThread to begin a
      * session in listening (server) mode. Called by the Activity onResume()
      * 开始聊天服务。 具体启动AcceptThread开始一个
-      会话在监听（服务器）模式。 由Activity onResume（）调用
+     *  会话在监听（服务器）模式。 由Activity onResume（）调用
      */
     public synchronized void start() {
         Log.d(TAG, "start");
