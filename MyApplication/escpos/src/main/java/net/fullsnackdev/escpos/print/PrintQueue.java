@@ -101,6 +101,7 @@ public class PrintQueue {
             if (mBtService.getState() != BtService.STATE_CONNECTED) {
                 if (!TextUtils.isEmpty(AppInfo.btAddress)) {
                     BluetoothDevice device = mAdapter.getRemoteDevice(AppInfo.btAddress);
+//                    BluetoothDevice device = mAdapter.getRemoteDevice("02:33:48:B8:38:0B");
                     mBtService.connect(device);
                     return;
                 }

@@ -115,7 +115,7 @@ public class MainActivity extends BluetoothActivity implements View.OnClickListe
                         intent.putExtra(BtService.KEY_DATA_TRANSACTION, historyDetailRes);
                         intent.putParcelableArrayListExtra(BtService.KEY_DATA_PRODUCT,list);
                         intent.putExtra(BtService.KEY_PRINT_MERCHANT_CPY,true);
-                        intent.setAction(PrintUtil.ACTION_PRINT_TEST);
+                        intent.setAction(PrintUtil.ACTION_PRINT_CUSTOMER);
                         startService(intent);
                     }
 

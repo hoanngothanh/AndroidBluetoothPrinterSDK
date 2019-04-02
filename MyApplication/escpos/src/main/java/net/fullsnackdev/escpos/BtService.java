@@ -6,13 +6,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-
 import net.fullsnackdev.escpos.models.HistoryDetailRes;
 import net.fullsnackdev.escpos.models.HistoryOrderRes;
 import net.fullsnackdev.escpos.print.GPrinterCommand;
+import net.fullsnackdev.escpos.print.PrintMsgEvent;
 import net.fullsnackdev.escpos.print.PrintPic;
 import net.fullsnackdev.escpos.print.PrintQueue;
 import net.fullsnackdev.escpos.print.PrintUtil;
+import net.fullsnackdev.escpos.print.PrinterMsgType;
 import net.fullsnackdev.escpos.printutil.PrintOrderDataMaker;
 import net.fullsnackdev.escpos.printutil.PrinterWriter;
 import net.fullsnackdev.escpos.printutil.PrinterWriter58mm;
@@ -20,6 +21,8 @@ import net.fullsnackdev.escpos.printutil.PrinterWriter58mm;
 import java.io.BufferedInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by liuguirong on 8/1/17.
@@ -52,11 +55,18 @@ public class BtService extends IntentService {
         if (intent == null || intent.getAction() == null) {
             return;
         }
-        if (intent.getAction().equals(PrintUtil.ACTION_PRINT_TEST)) {
+        if (intent.getAction().equals(PrintUtil.ACTION_PRINT_CUSTOMER)) {
             mHistoryDetailRes = intent.getParcelableExtra(KEY_DATA_TRANSACTION);
             mHistoryOrderRes = intent.getParcelableArrayListExtra(KEY_DATA_PRODUCT);
-            Boolean merchantPrint = intent.getBooleanExtra(KEY_PRINT_MERCHANT_CPY, false);
+            int merchantPrint = intent.getIntExtra(KEY_PRINT_MERCHANT_CPY, 1);
             printTest(mHistoryDetailRes, mHistoryOrderRes, merchantPrint);
+        } else if (intent.getAction().equals(PrintUtil.ACTION_PRINT_MERCHANT)) {
+            mHistoryDetailRes = intent.getParcelableExtra(KEY_DATA_TRANSACTION);
+            mHistoryOrderRes = intent.getParcelableArrayListExtra(KEY_DATA_PRODUCT);
+            int merchantPrint = intent.getIntExtra(KEY_PRINT_MERCHANT_CPY, 1);
+
+            printMerchant(mHistoryDetailRes, mHistoryOrderRes, 1);
+
         } else if (intent.getAction().equals(PrintUtil.ACTION_PRINT_TEST_TWO)) {
             printTesttwo(3);
         } else if (intent.getAction().equals(PrintUtil.ACTION_PRINT_BITMAP)) {
@@ -65,14 +75,23 @@ public class BtService extends IntentService {
 
     }
 
-    private void printTest(HistoryDetailRes historyDetailRes, ArrayList<HistoryOrderRes> historyOrderRes, boolean merchantcopy) {
+    private void printTest(HistoryDetailRes historyDetailRes, ArrayList<HistoryOrderRes> historyOrderRes, int merchantcopy) {
         PrintOrderDataMaker printOrderDataMaker = new PrintOrderDataMaker(this, "", PrinterWriter58mm.TYPE_58, PrinterWriter.HEIGHT_PARTING_DEFAULT, historyDetailRes, historyOrderRes);
         ArrayList<byte[]> printData = (ArrayList<byte[]>) printOrderDataMaker.getPrintData(PrinterWriter58mm.TYPE_58);
-        PrintQueue.getQueue(getApplicationContext()).add(printData);
-        if (merchantcopy) {
+
+        if (merchantcopy == 2) {
+            EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_MERCHANT_RECEIPT, "print"));
+        } else if (merchantcopy == 0) {
             ArrayList<byte[]> printDataMerchant = (ArrayList<byte[]>) printOrderDataMaker.getPrintDataMerchant(PrinterWriter58mm.TYPE_58);
-            PrintQueue.getQueue(getApplicationContext()).add(printDataMerchant);
+            printData.addAll(printDataMerchant);
         }
+        PrintQueue.getQueue(getApplicationContext()).add(printData);
+    }
+
+    private void printMerchant(HistoryDetailRes historyDetailRes, ArrayList<HistoryOrderRes> historyOrderRes, int merchantcopy) {
+        PrintOrderDataMaker printOrderDataMaker = new PrintOrderDataMaker(this, "", PrinterWriter58mm.TYPE_58, PrinterWriter.HEIGHT_PARTING_DEFAULT, historyDetailRes, historyOrderRes);
+        ArrayList<byte[]> printDataMerchant = (ArrayList<byte[]>) printOrderDataMaker.getPrintDataMerchant(PrinterWriter58mm.TYPE_58);
+        PrintQueue.getQueue(getApplicationContext()).add(printDataMerchant);
 
     }
 

@@ -10,7 +10,6 @@ import android.util.Log;
 
 import net.fullsnackdev.escpos.IpayPrinter;
 import net.fullsnackdev.escpos.PrinterDbHelper;
-import net.fullsnackdev.escpos.base.AppInfo;
 import net.fullsnackdev.escpos.print.PrintMsgEvent;
 import net.fullsnackdev.escpos.print.PrintQueue;
 import net.fullsnackdev.escpos.print.PrinterMsgType;
@@ -62,6 +61,8 @@ public class BtService {
     private int mState;
     // context
     private Context mContext;
+    private String lastDevice = "";
+    private int mRetryTime = 0;
 
     /**
      * Constructor. Prepares a new BluetoothChat session.
@@ -72,13 +73,19 @@ public class BtService {
         this.mContext = context;
         mPrinterDbHelper = PrinterDbHelper.getInstance(context);
         mPrinterList = mPrinterDbHelper.getAllPPrinter();
+
+        mDeviceArrayList = new ArrayList<>();
         for (int i = 0; i < mPrinterList.size(); i++) {
             if (!TextUtils.isEmpty(mPrinterList.get(i).macAddress)) {
                 BluetoothDevice device = mAdapter.getRemoteDevice(mPrinterList.get(i).macAddress);
                 mDeviceArrayList.add(device);
-                return;
             }
         }
+//        BluetoothDevice device = mAdapter.getRemoteDevice("98:D3:31:40:4E:22");
+//        BluetoothDevice device2 = mAdapter.getRemoteDevice("02:33:48:B8:38:0B");
+//        mDeviceArrayList.add(device);
+//        mDeviceArrayList.add(device2);
+
     }
 
     /**
@@ -123,6 +130,10 @@ public class BtService {
      * @param device The BluetoothDevice to connect
      */
     public synchronized void connect(BluetoothDevice device) {
+//        if (device.getAddress().equalsIgnoreCase(lastDevice)) {
+//            return;
+//        }
+//        lastDevice = device.getAddress();
         Log.d(TAG, "connect to: " + device);
         mDeviceArrayList.remove(device);
 
@@ -251,20 +262,40 @@ public class BtService {
 
     /**
      * Indicate that the connection attempt failed and notify the UI Activity.
+     *
+     * @param mmDevice
      */
-    private void connectionFailed() {
+    private void connectionFailed(BluetoothDevice mmDevice) {
+        mRetryTime++;
 //         Send a failure message back to the Activity
-        EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_TOAST, "Bluetooth connection failed, please restart the printer and try again"));
+        if (mRetryTime < 2) {
+            EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_TOAST, "Connection failed. Re-connecting..."));
+        } else {
+            EventBus.getDefault().post(new PrintMsgEvent(PrinterMsgType.MESSAGE_TOAST, "Bluetooth connection failed, please restart the printer and try again"));
+        }
+
         setState(STATE_NONE);
         // Start the service over to restart listening mode
         BtService.this.start();
-        retryConnected();
+//        if (mDeviceArrayList.size() > 0) {
+        if (mRetryTime < 2) {
+            retryConnected(mmDevice);
+        }
+
+//        } else {
+//            for (int i = 0; i < mPrinterList.size(); i++) {
+//                if (!TextUtils.isEmpty(mPrinterList.get(i).macAddress)) {
+//                    BluetoothDevice device = mAdapter.getRemoteDevice(mPrinterList.get(i).macAddress);
+//                    mDeviceArrayList.add(device);
+//                }
+//            }
+//        }
+
     }
 
-    private void retryConnected() {
-        BluetoothDevice bluetoothDevice = mDeviceArrayList.get(0);
-        connect(bluetoothDevice);
-
+    private void retryConnected(BluetoothDevice mmDevice) {
+//        BluetoothDevice bluetoothDevice = mDeviceArrayList.get(0);
+        connect(mmDevice);
     }
 
     /**
@@ -275,6 +306,7 @@ public class BtService {
      */
     public synchronized void start() {
         Log.d(TAG, "start");
+
 
         // Cancel any thread attempting to make a connection
         if (mConnectThread != null) {
@@ -438,7 +470,7 @@ public class BtService {
                         Log.e(TAG, "unable to close() " + mSocketType
                                 + " socket during connection failure", e2);
                     }
-                    connectionFailed();
+                    connectionFailed(mmDevice);
                     return;
                 }
 
